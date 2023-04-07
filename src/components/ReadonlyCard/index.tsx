@@ -1,31 +1,80 @@
 import PrimaryButton from "../Buttons/PrimaryButton";
 import { TbTrashXFilled, TbEdit } from "react-icons/tb";
+import { ConfirmModal } from "../Modals/ConfirmModal";
+import { useState } from "react";
+import { EditModal } from "../Modals/EditModal";
 
-export default function ReadonlyCard() {
+interface IContentCard {
+    id: number;
+    title: string;
+    author: string;
+    time: string;
+    content: string;
+}
+
+export default function ReadonlyCard({
+    id,
+    title,
+    author,
+    time,
+    content,
+}: IContentCard) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isEditable, setIsEditable] = useState(false);
+
+    const dateCreated = new Date(time);
+    const dateNow = new Date();
+    const betweenMinutes = dateNow.getTime() - dateCreated.getTime();
+
+    const betweenHours = betweenMinutes / (1000 * 60 * 60);
+
+    const hours = Math.floor(betweenHours);
+
+    const minutes = Math.floor((betweenHours - hours) * 60);
+
     return (
         <div className="border bg-white w-full rounded-2xl pb-6">
             <div className="w-full h-[70px] bg-primary rounded-t-lg flex justify-between items-center px-9">
-                <h2 className="text-white font-bold text-2xl">
-                    My First Post at CodeLeap Network!
-                </h2>
+                <h2 className="text-white font-bold text-2xl">{title}</h2>
                 <span className="flex gap-5">
                     <TbTrashXFilled
                         className="text-white cursor-pointer"
                         size={28}
+                        onClick={() => setIsOpen(true)}
                     />
-                    <TbEdit className="text-white cursor-pointer" size={28} />
+                    <TbEdit
+                        className="text-white cursor-pointer"
+                        size={28}
+                        onClick={() => setIsEditable(true)}
+                    />
                 </span>
             </div>
             <div className="flex justify-between px-9 text-secondary py-5">
-                <h3>@Victor</h3> <div>25 minutes ago</div>
+                <h3>{author}</h3>{" "}
+                <div>
+                    {hours.toLocaleString("en-US", { minimumIntegerDigits: 2 })}
+                    :
+                    {minutes.toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                    })}{" "}
+                    ago
+                </div>
             </div>
-            <p className="px-9 text-justify">
-                Curabitur suscipit suscipit tellus. Phasellus consectetuer
-                vestibulum elit. Pellentesque habitant morbi tristique senectus
-                et netus et malesuada fames ac turpis egestas. Maecenas egestas
-                arcu quis ligula mattis placerat. Duis vel nibh at velit
-                scelerisque suscipit.
-            </p>
+            <p className="px-9 text-justify">{content}</p>
+
+            <ConfirmModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                title="Are you sure you want to delete this item?"
+                type="delete"
+            />
+            <EditModal
+                isOpen={isEditable}
+                setIsOpen={setIsEditable}
+                title="Are you sure you want to delete this item?"
+                type="delete"
+                postId={id}
+            />
         </div>
     );
 }
