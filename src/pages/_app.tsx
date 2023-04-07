@@ -1,6 +1,11 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import { InfoContextProvider } from "@/context/InfoContext";
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+    return (
+        <InfoContextProvider>
+            <Component {...pageProps} />
+        </InfoContextProvider>
+    );
 }

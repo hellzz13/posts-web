@@ -1,7 +1,7 @@
 import PrimaryButton from "../Buttons/PrimaryButton";
 import { TbTrashXFilled, TbEdit } from "react-icons/tb";
 import { ConfirmModal } from "../Modals/ConfirmModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditModal } from "../Modals/EditModal";
 
 interface IContentCard {
@@ -21,16 +21,20 @@ export default function ReadonlyCard({
 }: IContentCard) {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
+    const [hours, setHours] = useState(0);
+    const [minutes, setMinutes] = useState(0);
 
-    const dateCreated = new Date(time);
-    const dateNow = new Date();
-    const betweenMinutes = dateNow.getTime() - dateCreated.getTime();
+    useEffect(() => {
+        const dateCreated = new Date(time);
+        const dateNow = new Date();
+        const betweenMinutes = dateNow.getTime() - dateCreated.getTime();
 
-    const betweenHours = betweenMinutes / (1000 * 60 * 60);
+        const betweenHours = betweenMinutes / (1000 * 60 * 60);
 
-    const hours = Math.floor(betweenHours);
+        setHours(Math.floor(betweenHours));
 
-    const minutes = Math.floor((betweenHours - hours) * 60);
+        setMinutes(Math.floor((betweenHours - hours) * 60));
+    }, []);
 
     return (
         <div className="border bg-white w-full rounded-2xl pb-6">

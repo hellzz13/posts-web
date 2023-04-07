@@ -1,8 +1,56 @@
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import PrimaryButton from "../Buttons/PrimaryButton";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import InfoContext from "@/context/InfoContext";
 
 export default function CreateCard() {
+    const CreatePostSchema = z.object({
+        title: z.string().nonempty(),
+        content: z.string().nonempty(),
+    });
+
+    type CreatePostFormData = z.infer<typeof CreatePostSchema>;
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isDirty },
+    } = useForm<CreatePostFormData>({
+        resolver: zodResolver(CreatePostSchema),
+    });
+
+    const { setIsLoading } = useContext(InfoContext);
+
+    async function createPost(data: CreatePostFormData) {
+        const dateNow = new Date().toISOString();
+        setIsLoading(true);
+        try {
+            await fetch("https://dev.codeleap.co.uk/careers/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: localStorage.getItem("@usernamePost"),
+                    created_datetime: dateNow,
+                    title: data.title,
+                    content: data.content,
+                }),
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        setIsLoading(false);
+    }
+
+    const { push } = useRouter();
+
     return (
-        <div className="border bg-white w-full rounded-2xl p-6">
+        <form
+            className="border bg-white w-full rounded-2xl p-6"
+            onSubmit={handleSubmit(createPost)}
+        >
             <h2 className="font-bold text-2xl mb-3">What’s on your mind?</h2>
             <div className="flex flex-col gap-6">
                 <div>
@@ -14,18 +62,19 @@ export default function CreateCard() {
                     </label>
                     <div>
                         <input
-                            // {...register("name")}
+                            {...register("title")}
                             id="title"
-                            name="title"
                             type="text"
                             autoComplete="title"
                             placeholder="Hello world"
                             className="appearance-none block w-full px-3 py-2 border border-secondary rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                     </div>
-                    {/* {errors.name && (
-                  <span className="text-red-600">{errors.name.message}</span>
-                )} */}
+                    {errors.title && (
+                        <span className="text-red-600">
+                            {errors.title.message}
+                        </span>
+                    )}
                 </div>
                 <div>
                     <label
@@ -36,23 +85,27 @@ export default function CreateCard() {
                     </label>
                     <div>
                         <textarea
-                            // {...register("content")}
+                            {...register("content")}
                             className="appearance-none resize-none block w-full px-3 py-2 border border-secondary rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             id="content"
                             placeholder="Content"
-                            name="content"
                             rows={4}
                         />
                     </div>
-                    {/* {errors.content && (
-                  <span className="text-red-600">{errors.content.message}</span>
-                )} */}
+                    {errors.content && (
+                        <span className="text-red-600">
+                            {errors.content.message}
+                        </span>
+                    )}
                 </div>
             </div>
-
             <div className="pt-4 flex justify-end w-full">
-                <PrimaryButton title="CREATE" disabled={false} />
+                <PrimaryButton
+                    title="CREATE"
+                    disabled={!isDirty || Boolean(Object.keys(errors).length)}
+                    onClick={() => push("/posts")}
+                />
             </div>
-        </div>
+        </form>
     );
 }

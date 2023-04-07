@@ -1,32 +1,31 @@
 import MainArea from "@/components/MainArea";
 import SignUpCard from "@/components/SignUpCard";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { Post } from "@/types/Post";
+import InfoContext from "@/context/InfoContext";
+import { FaSpinner } from "react-icons/fa";
+import { useRouter } from "next/router";
 
-interface HomeProps {
-    posts: { results: Post[] };
-}
+export default function Home() {
+    const { hasName, isLoading } = useContext(InfoContext);
 
-export default function Home({ posts: { results } }: HomeProps) {
-    const [hasName, setHasName] = useState(true);
+    const { push } = useRouter();
+
     return (
         <div>
-            {hasName ? (
-                <MainArea posts={results} />
+            {isLoading ? (
+                <div className="flex justify-center items-center h-screen">
+                    <div className="text-primary flex flex-col items-center gap-3">
+                        <FaSpinner className="animate-spin" size={28} />
+                        <p>Carregando...</p>
+                    </div>
+                </div>
             ) : (
-                <div className="flex justify-center items-center h-full">
+                <div className="flex justify-center items-center h-screen">
                     <SignUpCard />
                 </div>
             )}
         </div>
     );
 }
-
-export const getStaticProps: GetServerSideProps<HomeProps> = async () => {
-    const response = await fetch("https://dev.codeleap.co.uk/careers/");
-    const posts = await response.json();
-    return {
-        props: { posts },
-    };
-};

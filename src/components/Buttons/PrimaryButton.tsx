@@ -5,14 +5,12 @@ type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     title: string;
     isLoading?: boolean;
     children?: ReactNode;
-    color?: string;
 };
 
 export default function PrimaryButton({
     title,
     isLoading,
     children,
-    color,
     ...rest
 }: PrimaryButtonProps) {
     return (

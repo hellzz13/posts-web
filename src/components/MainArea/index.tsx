@@ -20,9 +20,9 @@ export default function MainArea({ posts }: IMainArea) {
 
             <section className="w-full p-6 space-y-9">
                 {posts &&
-                    posts.map((post) => (
+                    posts.map((post, index) => (
                         <ReadonlyCard
-                            key={post.id}
+                            key={index}
                             id={post.id}
                             title={post.title}
                             author={post.username}
