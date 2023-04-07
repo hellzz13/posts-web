@@ -5,6 +5,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import InfoContext from "@/context/InfoContext";
+import { api } from "@/pages/api";
 
 export default function CreateCard() {
     const CreatePostSchema = z.object({
@@ -17,6 +18,7 @@ export default function CreateCard() {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors, isDirty },
     } = useForm<CreatePostFormData>({
         resolver: zodResolver(CreatePostSchema),
@@ -28,7 +30,7 @@ export default function CreateCard() {
         const dateNow = new Date().toISOString();
         setIsLoading(true);
         try {
-            await fetch("https://dev.codeleap.co.uk/careers/", {
+            await fetch(api, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -41,6 +43,8 @@ export default function CreateCard() {
         } catch (e) {
             console.log(e);
         }
+        setValue("title", "");
+        setValue("content", "");
         setIsLoading(false);
     }
 

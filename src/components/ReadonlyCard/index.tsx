@@ -28,13 +28,13 @@ export default function ReadonlyCard({
         const dateCreated = new Date(time);
         const dateNow = new Date();
         const betweenMinutes = dateNow.getTime() - dateCreated.getTime();
-
         const betweenHours = betweenMinutes / (1000 * 60 * 60);
 
         setHours(Math.floor(betweenHours));
-
         setMinutes(Math.floor((betweenHours - hours) * 60));
     }, []);
+
+    function removePost(id: number) {}
 
     return (
         <div className="border bg-white w-full rounded-2xl pb-6">
@@ -71,6 +71,7 @@ export default function ReadonlyCard({
                 setIsOpen={setIsOpen}
                 title="Are you sure you want to delete this item?"
                 type="delete"
+                // action={}
             />
             <EditModal
                 isOpen={isEditable}

@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { api } from "../api";
 
 interface HomeProps {
     posts: { results: Post[] };
@@ -53,7 +54,7 @@ export default function MainArea({ posts: { results } }: HomeProps) {
 }
 
 export const getStaticProps: GetServerSideProps<HomeProps> = async () => {
-    const response = await fetch("https://dev.codeleap.co.uk/careers/");
+    const response = await fetch(api);
     const posts = await response.json();
     return {
         props: { posts },
