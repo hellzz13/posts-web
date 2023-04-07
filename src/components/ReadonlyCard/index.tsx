@@ -3,6 +3,7 @@ import { TbTrashXFilled, TbEdit } from "react-icons/tb";
 import { ConfirmModal } from "../Modals/ConfirmModal";
 import { useEffect, useState } from "react";
 import { EditModal } from "../Modals/EditModal";
+import { api } from "@/pages/api";
 
 interface IContentCard {
     id: number;
@@ -34,7 +35,16 @@ export default function ReadonlyCard({
         setMinutes(Math.floor((betweenHours - hours) * 60));
     }, []);
 
-    function removePost(id: number) {}
+    async function removePost(id: number) {
+        try {
+            await fetch(api + `${id}/`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <div className="border bg-white w-full rounded-2xl pb-6">
@@ -71,7 +81,8 @@ export default function ReadonlyCard({
                 setIsOpen={setIsOpen}
                 title="Are you sure you want to delete this item?"
                 type="delete"
-                // action={}
+                action={removePost}
+                postId={id}
             />
             <EditModal
                 isOpen={isEditable}

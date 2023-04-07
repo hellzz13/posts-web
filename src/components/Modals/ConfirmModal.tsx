@@ -9,16 +9,13 @@ type ActionModalProps = {
     title: string;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    action: (postId: number) => Promise<void>;
+    postId: number;
     children?: ReactNode;
     redirectModal?: boolean;
     link?: string;
     setIsQuickViewOpen?: (isOpen: boolean) => void;
-    action?: (
-        postId: string | number | undefined,
-        commentId: number | string | undefined
-    ) => Promise<void>;
     itemId?: number | string;
-    postId?: number | string;
 };
 
 export const ConfirmModal = ({
@@ -27,7 +24,6 @@ export const ConfirmModal = ({
     isOpen,
     setIsOpen,
     action,
-    itemId,
     postId,
 }: ActionModalProps) => {
     const completeButtonRef = useRef(null);
@@ -85,7 +81,7 @@ export const ConfirmModal = ({
                                         <PrimaryButton
                                             title="Delete"
                                             onClick={() => {
-                                                // action(itemId, postId);
+                                                action(postId);
                                                 setIsOpen(false);
                                             }}
                                         />

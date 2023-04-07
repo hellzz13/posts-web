@@ -1,8 +1,5 @@
-import MainArea from "@/components/MainArea";
 import SignUpCard from "@/components/SignUpCard";
-import { useContext, useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
-import { Post } from "@/types/Post";
+import { useContext } from "react";
 import InfoContext from "@/context/InfoContext";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
