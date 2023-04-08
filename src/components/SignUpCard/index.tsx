@@ -10,7 +10,7 @@ import InfoContext from "@/context/InfoContext";
 
 export default function SignUpCard() {
     const CreateNameSchema = z.object({
-        name: z.string().nonempty(),
+        name: z.string().nonempty("Username is required"),
     });
 
     type CreateNameFormData = z.infer<typeof CreateNameSchema>;
