@@ -8,6 +8,7 @@ import { Post } from "@/types/Post";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import SaveButton from "../Buttons/SaveButton";
 
 type ActionModalProps = {
     type: "success" | "delete";
@@ -177,14 +178,10 @@ export const EditModal = ({
 
                                     {/* Actions button */}
                                     <div className="flex gap-3 flex-row-reverse">
-                                        <PrimaryButton
+                                        <SaveButton
                                             title={"Save"}
                                             form="update-data"
                                             type="submit"
-                                            onClick={() => {
-                                                // action(itemId, postId);
-                                                // setIsOpen(false);
-                                            }}
                                         />
                                         <SecondaryButton
                                             title={"Cancel"}

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import InfoContext from "@/context/InfoContext";
 import { api } from "@/pages/api";
 import { parseCookies } from "nookies";

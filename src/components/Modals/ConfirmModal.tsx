@@ -3,6 +3,7 @@ import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecundaryButton";
+import DeleteButton from "../Buttons/DeleteButton";
 
 type ActionModalProps = {
     type: "success" | "delete";
@@ -78,7 +79,7 @@ export const ConfirmModal = ({
 
                                     {/* Actions button */}
                                     <div className="flex gap-3 flex-row-reverse">
-                                        <PrimaryButton
+                                        <DeleteButton
                                             title="Delete"
                                             onClick={() => {
                                                 action(postId);
