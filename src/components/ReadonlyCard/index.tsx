@@ -1,9 +1,12 @@
 import PrimaryButton from "../Buttons/PrimaryButton";
 import { TbTrashXFilled, TbEdit } from "react-icons/tb";
 import { ConfirmModal } from "../Modals/ConfirmModal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { EditModal } from "../Modals/EditModal";
 import { api } from "@/pages/api";
+
+import { useRouter } from "next/navigation";
+import InfoContext from "@/context/InfoContext";
 
 interface IContentCard {
     id: number;
@@ -25,6 +28,9 @@ export default function ReadonlyCard({
     const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
 
+    const { push } = useRouter();
+    const { setIsLoading } = useContext(InfoContext);
+
     useEffect(() => {
         const dateCreated = new Date(time);
         const dateNow = new Date();
@@ -36,6 +42,7 @@ export default function ReadonlyCard({
     }, []);
 
     async function removePost(id: number) {
+        setIsLoading(true);
         try {
             await fetch(api + `${id}/`, {
                 method: "DELETE",
@@ -44,6 +51,8 @@ export default function ReadonlyCard({
         } catch (e) {
             console.log(e);
         }
+        push("/posts");
+        setIsLoading(false);
     }
 
     return (
