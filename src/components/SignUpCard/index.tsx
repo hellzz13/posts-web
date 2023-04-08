@@ -3,9 +3,10 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
+import { useContext } from "react";
+import InfoContext from "@/context/InfoContext";
 
 export default function SignUpCard() {
     const CreateNameSchema = z.object({
@@ -22,8 +23,12 @@ export default function SignUpCard() {
         resolver: zodResolver(CreateNameSchema),
     });
 
+    const { setIsLoading, isLoading } = useContext(InfoContext);
+
     const saveName = ({ name }: CreateNameFormData) => {
+        setIsLoading(true);
         setCookie(null, "@usernamePost", name);
+        push("/posts");
     };
 
     const { push } = useRouter();
@@ -63,7 +68,6 @@ export default function SignUpCard() {
                 <PrimaryButton
                     title="ENTER"
                     disabled={!isDirty || Boolean(Object.keys(errors).length)}
-                    onClick={() => push("/posts")}
                 />
             </div>
         </form>

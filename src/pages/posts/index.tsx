@@ -3,15 +3,18 @@ import ReadonlyCard from "@/components/ReadonlyCard";
 import InfoContext from "@/context/InfoContext";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { api } from "../api";
 import { HomeProps } from "@/types/Home";
 import { parseCookies } from "nookies";
 
 export default function MainArea({ posts: { results } }: HomeProps) {
-    const { isLoading } = useContext(InfoContext);
-    const { push } = useRouter();
+    const { isLoading, setIsLoading } = useContext(InfoContext);
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [setIsLoading]);
 
     return (
         <main className="h-full mx-auto max-w-3xl bg-white">
