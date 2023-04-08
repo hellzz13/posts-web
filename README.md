@@ -41,4 +41,4 @@ Finally, open [http://localhost:3000](http://localhost:3000/) with your browser
 
 The project can be access on the link:
 
-[](https://posts-web.vercel.app/)
+[Post web](https://posts-web.vercel.app/)
