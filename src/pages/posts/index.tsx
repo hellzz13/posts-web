@@ -1,16 +1,12 @@
 import CreateCard from "@/components/CreateCard";
 import ReadonlyCard from "@/components/ReadonlyCard";
 import InfoContext from "@/context/InfoContext";
-import { Post } from "@/types/Post";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { api } from "../api";
-
-interface HomeProps {
-    posts: { results: Post[] };
-}
+import { HomeProps } from "@/types/Home";
 
 export default function MainArea({ posts: { results } }: HomeProps) {
     const { hasName, isLoading } = useContext(InfoContext);

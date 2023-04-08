@@ -1,4 +1,3 @@
-import PrimaryButton from "../Buttons/PrimaryButton";
 import { TbTrashXFilled, TbEdit } from "react-icons/tb";
 import { ConfirmModal } from "../Modals/ConfirmModal";
 import { useContext, useEffect, useState } from "react";
@@ -55,6 +54,28 @@ export default function ReadonlyCard({
         setIsLoading(false);
     }
 
+    async function updatePost(data: {
+        id: number;
+        title: string;
+        content: string;
+    }) {
+        setIsLoading(true);
+        try {
+            await fetch(api + `${data.id}/`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: data.title,
+                    content: data.content,
+                }),
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        push("/posts");
+        setIsLoading(false);
+    }
+
     return (
         <div className="border bg-white w-full rounded-2xl pb-6">
             <div className="w-full h-[70px] bg-primary rounded-t-lg flex justify-between items-center px-9">
@@ -99,6 +120,7 @@ export default function ReadonlyCard({
                 title="Are you sure you want to delete this item?"
                 type="delete"
                 postId={id}
+                action={updatePost}
             />
         </div>
     );
