@@ -39,8 +39,8 @@ export const EditModal = ({
 
     const CreatePostSchema = z.object({
         id: z.number(),
-        title: z.string().nonempty(),
-        content: z.string().nonempty(),
+        title: z.string().nonempty("Title is required"),
+        content: z.string().nonempty("Title is required"),
     });
 
     type CreatePostFormData = z.infer<typeof CreatePostSchema>;
@@ -56,7 +56,7 @@ export const EditModal = ({
 
     useEffect(() => {
         setValue("id", postId);
-    }, [postId, setValue]);
+    }, []);
 
     useEffect(() => {
         async function getSinglePost() {

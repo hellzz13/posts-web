@@ -9,8 +9,8 @@ import { api } from "@/pages/api";
 
 export default function CreateCard() {
     const CreatePostSchema = z.object({
-        title: z.string().nonempty(),
-        content: z.string().nonempty(),
+        title: z.string().nonempty("Title is required"),
+        content: z.string().nonempty("Title is required"),
     });
 
     type CreatePostFormData = z.infer<typeof CreatePostSchema>;
