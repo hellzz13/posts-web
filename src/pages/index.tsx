@@ -5,9 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 export default function Home() {
-    const { hasName, isLoading } = useContext(InfoContext);
-
-    const { push } = useRouter();
+    const { isLoading } = useContext(InfoContext);
 
     return (
         <div>

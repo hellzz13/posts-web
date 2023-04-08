@@ -7,9 +7,10 @@ import { useContext } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { api } from "../api";
 import { HomeProps } from "@/types/Home";
+import { parseCookies } from "nookies";
 
 export default function MainArea({ posts: { results } }: HomeProps) {
-    const { hasName, isLoading } = useContext(InfoContext);
+    const { isLoading } = useContext(InfoContext);
     const { push } = useRouter();
 
     return (
@@ -49,9 +50,17 @@ export default function MainArea({ posts: { results } }: HomeProps) {
     );
 }
 
-export const getStaticProps: GetServerSideProps<HomeProps> = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const { ["@usernamePost"]: username } = parseCookies(ctx);
     const response = await fetch(api);
     const posts = await response.json();
+
+    if (!username) {
+        return {
+            redirect: { destination: "/", permanent: false },
+        };
+    }
+
     return {
         props: { posts },
     };

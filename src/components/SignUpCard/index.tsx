@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { setCookie } from "nookies";
 
 export default function SignUpCard() {
     const CreateNameSchema = z.object({
@@ -22,7 +23,7 @@ export default function SignUpCard() {
     });
 
     const saveName = ({ name }: CreateNameFormData) => {
-        localStorage.setItem("@usernamePost", name);
+        setCookie(null, "@usernamePost", name);
     };
 
     const { push } = useRouter();

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import InfoContext from "@/context/InfoContext";
 import { api } from "@/pages/api";
+import { parseCookies } from "nookies";
 
 export default function CreateCard() {
     const CreatePostSchema = z.object({
@@ -25,6 +26,7 @@ export default function CreateCard() {
     });
 
     const { setIsLoading } = useContext(InfoContext);
+    const { ["@usernamePost"]: username } = parseCookies();
 
     async function createPost(data: CreatePostFormData) {
         const dateNow = new Date().toISOString();
@@ -34,7 +36,7 @@ export default function CreateCard() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    username: localStorage.getItem("@usernamePost"),
+                    username: username,
                     created_datetime: dateNow,
                     title: data.title,
                     content: data.content,
