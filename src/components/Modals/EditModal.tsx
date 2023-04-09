@@ -41,7 +41,7 @@ export const EditModal = ({
     const CreatePostSchema = z.object({
         id: z.number(),
         title: z.string().nonempty("Title is required"),
-        content: z.string().nonempty("Title is required"),
+        content: z.string().nonempty("Content is required"),
     });
 
     type CreatePostFormData = z.infer<typeof CreatePostSchema>;
